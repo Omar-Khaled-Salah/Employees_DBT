@@ -114,7 +114,7 @@ erDiagram
 ### Prerequisites
 
 - A running SQL Server instance and an empty database for the project
-- Microsoft ODBC Driver for SQL Server installed
+- Microsoft ODBC Driver 17 for SQL Server installed (18 also works if you update the `driver` setting)
 - [uv](https://docs.astral.sh/uv/) and Python 3.13+
 
 ### 1. Install dependencies
@@ -135,19 +135,18 @@ Depi_DBT_2:
   outputs:
     dev:
       type: sqlserver
-      driver: "ODBC Driver 18 for SQL Server"
+      driver: "ODBC Driver 17 for SQL Server"
       server: localhost
       port: 1433
-      database: <your_database>
+      database: DEPI_DBT
       schema: dbo
-      user: <your_user>
-      password: <your_password>
-      encrypt: true
+      windows_login: true
+      encrypt: false
       trust_cert: true
-      threads: 1
+      threads: 4
 ```
 
-Adjust the driver name, authentication method, and server to match your setup.
+This example uses Windows authentication against a local SQL Server and a database named `DEPI_DBT`. For SQL authentication, replace `windows_login: true` with `user` and `password`. The `schema: dbo` is only the default; the project overrides it so the models land in `ODS` and `STG`.
 
 ### 3. Build everything
 
@@ -184,4 +183,7 @@ Tests are defined in `Depi_DBT_2/models/STG/schema.yml` and `Depi_DBT_2/tests/`:
 
 ## Author
 
-Omar Khaled Salah, [@Omar-Khaled-Salah](https://github.com/Omar-Khaled-Salah)
+**Omar Khaled Salah**
+
+- GitHub: [@Omar-Khaled-Salah](https://github.com/Omar-Khaled-Salah)
+- LinkedIn: [omar-khaled-salah](https://www.linkedin.com/in/omar-khaled-salah/)
