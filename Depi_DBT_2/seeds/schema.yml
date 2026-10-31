@@ -1,0 +1,121 @@
+version: 2
+
+models:
+  - name: DIMgender
+    description: "Gender dimension (one row per distinct gender)"
+    columns:
+      - name: id
+        description: "Primary key for gender"
+        data_tests:
+          - unique
+          - not_null
+      - name: gender
+        description: "Gender label"
+        data_tests:
+          - unique
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ["Male", "Female"]
+
+  - name: DIMcountry
+    description: "Country dimension (one row per distinct country)"
+    columns:
+      - name: id
+        description: "Primary key for country"
+        data_tests:
+          - unique
+          - not_null
+      - name: country
+        description: "Country name"
+        data_tests:
+          - unique
+          - not_null
+
+  - name: DIMdepartment
+    description: "Department dimension (one row per distinct department)"
+    columns:
+      - name: id
+        description: "Primary key for department"
+        data_tests:
+          - unique
+          - not_null
+      - name: department
+        description: "Department name"
+        data_tests:
+          - unique
+          - not_null
+
+  - name: DIMdate
+    description: "Date dimension built from employees' dates of birth"
+    columns:
+      - name: id
+        description: "Primary key for date, in YYYYMMDD format"
+        data_tests:
+          - unique
+          - not_null
+      - name: full_date
+        description: "The calendar date"
+        data_tests:
+          - unique
+          - not_null
+
+  - name: OBT
+    description: "One big table: one row per employee, cleaned from ODS"
+    columns:
+      - name: employee_id
+        description: "Employee ID from the source file"
+        data_tests:
+          - unique
+          - not_null
+      - name: email
+        description: "Employee email"
+        data_tests:
+          - not_null
+      - name: gender
+        description: "Employee gender"
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('DIMgender')
+                field: gender
+      - name: department
+        description: "Employee department"
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('DIMdepartment')
+                field: department
+      - name: country
+        description: "Employee country"
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('DIMcountry')
+                field: country
+      - name: salary
+        description: "Salary as DECIMAL(10,2)"
+        data_tests:
+          - not_null
+  
+  - name: DIMemployee
+    description: "Employee dimension (one row per employee)"
+    columns:
+      - name: id
+        description: "Primary key for employee"
+        data_tests:
+          - unique
+          - not_null
+      - name: employee_id
+        description: "Employee ID from the source file"
+        data_tests:
+          - unique
+          - not_null
+      - name: email
+        description: "Employee email"
+        data_tests:
+          - unique
+          - not_null
