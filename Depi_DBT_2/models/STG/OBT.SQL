@@ -1,6 +1,6 @@
 {{ config(
     materialized = 'incremental',
-    unique_key = 'employee'
+    unique_key = 'employee_id'
 )}}
 
 SELECT DISTINCT

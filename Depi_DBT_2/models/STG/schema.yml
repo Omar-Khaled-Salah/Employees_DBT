@@ -119,3 +119,57 @@ models:
         data_tests:
           - unique
           - not_null
+
+  - name: FACTemployee
+    description: "Fact table: one row per employee, with salary and keys to all dimensions"
+    columns:
+      - name: id
+        description: "Primary key of the fact table"
+        data_tests:
+          - unique
+          - not_null
+      - name: FK_employee_id
+        description: "Foreign key to DIMemployee"
+        data_tests:
+          - unique
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('DIMemployee')
+                field: id
+      - name: FK_gender_id
+        description: "Foreign key to DIMgender"
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('DIMgender')
+                field: id
+      - name: FK_country_id
+        description: "Foreign key to DIMcountry"
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('DIMcountry')
+                field: id
+      - name: FK_department_id
+        description: "Foreign key to DIMdepartment"
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('DIMdepartment')
+                field: id
+      - name: FK_date_dob_id
+        description: "Foreign key to DIMdate (date of birth)"
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('DIMdate')
+                field: id
+      - name: salary
+        description: "Salary as DECIMAL(10,2)"
+        data_tests:
+          - not_null

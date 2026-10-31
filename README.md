@@ -97,11 +97,10 @@ erDiagram
 |-- Depi_DBT_2/             # the dbt project
 |   |-- dbt_project.yml
 |   |-- seeds/
-|   |   |-- DEPI_data.csv   # source data
-|   |   `-- schema.yml      # tests and descriptions for the models
+|   |   `-- DEPI_data.csv   # source data
 |   |-- models/
 |   |   |-- ODS/ODS.SQL
-|   |   `-- STG/            # DIM*, FACTemployee, OBT
+|   |   `-- STG/            # DIM*, FACTemployee, OBT, schema.yml (tests)
 |   |-- macros/
 |   |   |-- capitalize_name.SQL
 |   |   `-- generate_schema_name.SQL
@@ -167,9 +166,10 @@ uv run dbt test    # run tests
 
 ## Data quality tests
 
-Tests are defined in `Depi_DBT_2/seeds/schema.yml` and `Depi_DBT_2/tests/`:
+Tests are defined in `Depi_DBT_2/models/STG/schema.yml` and `Depi_DBT_2/tests/`:
 
 - `unique` and `not_null` on the primary keys of every dimension and on `OBT.employee_id`
+- `not_null` and `relationships` on every foreign key of `FACTemployee`, so a missing dimension match is caught instead of silently producing a `NULL` key
 - `accepted_values` on `DIMgender.gender` (`Male`, `Female`)
 - `relationships` checks that every gender, department, and country in `OBT` exists in its dimension
 - A singular test, `NegativeSalary`, which fails if any salary in `OBT` is below zero
